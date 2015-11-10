@@ -1,8 +1,4 @@
 #include "systemc.h"
-#include "stim.h"
-#include "exor2.h"
-#include "mon.h"
-#include "ram.h"
 #include "counter.cpp"
 
 // void next_cycle(sc_signal<bool> &signal_clk)
