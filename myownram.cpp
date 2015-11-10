@@ -9,19 +9,14 @@ SC_MODULE (myownram) {
     int current_data;
     int current_addr;
 
-    void read_data() {
+    void process_data() {
+        current_data = data_bus.read();
+        current_addr = address_bus.read();
         if (read_signal && !write_signal){
             data_bus.write(ram_data[address_bus.read()]);
-            cout <<"read data : " << data_bus << endl;
-        } else {
-            data_bus.write(0);
+            cout <<"read data : " << data_bus << " at " << current_addr << endl;
         }
-    };
-
-    void write_data() {
-        if (!read_signal && write_signal){
-            current_data = data_bus.read();
-            current_addr = address_bus.read();
+        else if (!read_signal && write_signal){
             cout<<"writing data " << current_data << " at " << current_addr << endl;
             ram_data[current_addr] = current_data;
             data_bus.write(current_data);
@@ -30,9 +25,7 @@ SC_MODULE (myownram) {
 
     SC_CTOR(myownram)
     {
-        SC_METHOD(read_data);
-        sensitive << address_bus << read_signal << write_signal;
-        SC_METHOD(write_data);
+        SC_METHOD(process_data);
         sensitive << address_bus << read_signal << write_signal << data_bus;
     }
 };

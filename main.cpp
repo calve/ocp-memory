@@ -60,6 +60,7 @@ int sc_main(int argc, char*argv[]) {
 
     sc_start(1.0, SC_NS);
 
+    // Set trace up
     sc_trace_file *wf = sc_create_vcd_trace_file("counter_trace");
     sc_trace(wf, clock, "clock");
     sc_trace(wf, reset, "reset");
@@ -76,46 +77,24 @@ int sc_main(int argc, char*argv[]) {
     write_signal = 0;
     read_signal = 0;
     data_bus = 0;
-
-    // try a first write
     write_signal = 1;
+    // try a first write
     for (i=0; i<5; i++){
         cout<< "try write" << endl;
         data_bus = i;
         address_bus = i*2;
         sc_start(1.0, SC_NS);
     }
-    write_signal = 0;
 
-    // try a read
+    write_signal = 0;
     read_signal = 1;
-    for (i=0; i<5; i++){
+    sc_start(1.0, SC_NS);
+    for (i=4; i>=0; i--){
         cout<< "try read" << endl;
         address_bus = i*2;
         sc_start(1.0, SC_NS);
     }
     read_signal = 0;
 
-    // for (i=0; i<5; i++){
-    //     clock = 0;
-    //     sc_start(1.0, SC_NS);
-    //     clock = 1;
-    //     sc_start(1.0, SC_NS);
-    // }
-    // // Initialize environment
-    // reset = 1;
-    // for (i=0; i<5; i++){
-    //     clock = 0;
-    //     sc_start(1.0, SC_NS);
-    //     clock = 1;
-    //     sc_start(1.0, SC_NS);
-    // }
-    // reset = 0;
-    // for (i=0; i<5; i++){
-    //     clock = 0;
-    //     sc_start(1.0, SC_NS);
-    //     clock = 1;
-    //     sc_start(1.0, SC_NS);
-    // }
     return 0;
 }
